@@ -36,7 +36,7 @@ struct HomeView: View {
                         Button(action:{
                             withAnimation{
                                 self.changeView.toggle()
-                                print(changeView)
+                                
                             }
                            
                         }, label: {
