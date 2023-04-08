@@ -111,11 +111,11 @@ struct MainView: View {
                                                 withAnimation{
                                                     if((val2 != "?") && (val1 != "?") && (checkTrue == true)){
                                                         removeDots(at: (rowIndex, columnIndex))
-                                                        dotsCount.append(dotsCount.count + 1)
+                                                        dotsCount.append(rowIndex)
                                                     }
                                                     else if val1 != "?" && checkTrue == false{
                                                         removeDots(at: (rowIndex, columnIndex))
-                                                        dotsCount.append(dotsCount.count + 1)
+                                                        dotsCount.append(rowIndex)
                                                     }else{
                                                         self.hintBtn = true
                                                     }
@@ -143,12 +143,17 @@ struct MainView: View {
                                     .shadow(radius: 4, x: 2, y: 2)
                                 HStack{
                                     withAnimation{
-                                        ForEach(dotsCount, id: \.self){
-                                            _ in
+                                        ForEach(dotsCount.indices, id: \.self){
+                                            index in
                                             Circle()
                                                 .frame(width: 24, height: 24)
                                                 .foregroundColor(Color("Purple"))
                                                 .shadow(radius: 2, x: 2, y:2)
+                                                .onTapGesture {
+                                                    dots[dotsCount[index]].append(contentsOf: [dots.count+1])
+                                                    dotsCount.remove(at: index)
+                                                    
+                                                }
                                         }
                                     }
                                    
@@ -265,6 +270,11 @@ struct MainView: View {
     
     func removeDots(at index: (row: Int, cols: Int)){
         dots[index.row].remove(at: index.cols)
+    }
+    
+    
+    func addDots(at index: (row: Int, cols: Int)){
+        dots[index.row].append(contentsOf: [index.cols])
     }
     
     func checkDots(_ val1: Int, _ theDots: Int)-> Bool{
