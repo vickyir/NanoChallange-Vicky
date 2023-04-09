@@ -13,11 +13,13 @@ struct MainView: View {
     @State private var dots : [[Int]] = [[1,2,3], [4,5,6], [7,8,9], [10,11,12]]
     @State var val1 = "?"
     @State var val2 = "?"
-    @State var result = ""
+    @State var result: Int?
+    @State private var hintInformation = ""
     @State private var finalCount =  false
     @State var hintBtn = false
     @State var soundBtn = true
     @State private var dotsCount: [Int] = []
+    @State private var dotsCountLap1 : Int = 0
     @State private var currentDice = 0
     @State private var SplashScreen = false
     @State private var checkTrue =  false
@@ -45,12 +47,7 @@ struct MainView: View {
                         Spacer()
                         ZStack{
                             if hintBtn{
-                                RoundedRectangle(cornerRadius:8)
-                                    .frame(width: 340, height: 41)
-                                    .foregroundColor(Color("SecondColor"))
-                                Text("Tekan Dadu Untuk Memulai")
-                                    .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                    .foregroundColor(Color("PrimaryColor"))
+                                Itambah.hintInformation(hintInformation: $hintInformation)
                             }
                             
                         }
@@ -60,7 +57,7 @@ struct MainView: View {
                             .onTapGesture {
                                 withAnimation{
                                     self.hintBtn.toggle()
-                                    print(hintBtn)
+        
                                 }
                                 
                             }
@@ -83,7 +80,13 @@ struct MainView: View {
                             .scaledToFill()
                             .onTapGesture {
                                 self.hintBtn = false
-                                self.SplashScreen = true
+                                if (checkTrue == false && checkTrue2 == false) || (checkTrue == true && checkTrue2 == false){
+                                    self.SplashScreen = true
+                                }else{
+                                    self.hintInformation = "Kesempatan memutar dadu hanya dua kali"
+                                    self.hintBtn.toggle()
+                                }
+                                
                             }
                         Text(val1)
                             .font(.system(size: 140, weight: .semibold, design: .rounded))
@@ -93,11 +96,11 @@ struct MainView: View {
                         Image("Tambah")
                         Text(val2)
                             .font(.system(size: 140, weight: .semibold, design: .rounded))
-                            .foregroundColor(Color("SecondColor"))
+                            .foregroundColor(Color((checkTrue) ? "ThirdColor" : "SecondColor"))
                             .shadow(radius: 2, x: 2, y: 2)
                             .scaledToFill()
                         Image("Sama Dengan")
-                        TextField("?", text: $result)
+                        TextField("?", value: $result, format: .number)
                             .frame(width: 151, height: 151)
                             .multilineTextAlignment(TextAlignment.center)
                             .font(.system(size: 120, weight: .semibold, design: .rounded))
@@ -108,6 +111,7 @@ struct MainView: View {
                             .foregroundColor(Color("SecondColor"))
                             .scaledToFill()
                             .shadow(radius: 4, x: 2, y: 2)
+                            .keyboardType(.numberPad)
                     }
                     
                     HStack{
@@ -121,14 +125,21 @@ struct MainView: View {
                                         Image("Circle 1")
                                             .onTapGesture {
                                                 withAnimation{
-                                                    if((val2 != "?") && (val1 != "?") && (checkTrue == true)){
+                                                    if((val2 != "?") && (val1 != "?") && (checkTrue == true) && (checkTrue2 == false)){
                                                         removeDots(at: (rowIndex, columnIndex))
                                                         dotsCount.append(rowIndex)
                                                     }
-                                                    else if val1 != "?" && checkTrue == false{
+                                                    else if ((val1 != "?" && checkTrue == false) || (val2 != "?" && checkTrue == false)){
                                                         removeDots(at: (rowIndex, columnIndex))
                                                         dotsCount.append(rowIndex)
                                                     }else{
+                                                        if checkTrue == false && checkTrue2 == false{
+                                                            self.hintInformation = "Tekan dadu untuk memulai"
+                                                        }else if(checkTrue == true && checkTrue2 == false){
+                                                            self.hintInformation = "Tekan dadu kembali untuk memulai"
+                                                        }else{
+                                                            self.hintInformation = "Masukan jawaban penjumlahan pada kotak"
+                                                        }
                                                         self.hintBtn = true
                                                     }
                                                     
@@ -180,9 +191,9 @@ struct MainView: View {
                                
                             Button(action: {
                                 if val1 != "?" {
-                                    if checkTrue == true{
+                                    if checkTrue == true && checkTrue2 == true{
         
-                                        self.finalCount = checkResult(Int(result) ?? 0, dotsCount.count )
+                                        self.finalCount = checkResult(Int(result ?? 0), dotsCount.count )
                                         
                                         if finalCount == false {
                                             self.checkFalse = true
@@ -190,11 +201,22 @@ struct MainView: View {
                                             self.checkCorrect = true
                                         }
                                     }else{
-                                        self.checkTrue = checkDots(Int(val1) ?? 0, dotsCount.count)
+                                        if checkTrue == false{
+                                            self.checkTrue = checkDots(Int(val1) ?? 0, dotsCount.count)
+                                            self.dotsCountLap1 = dotsCount.count
+                                            if checkTrue == false{
+                                                self.checkFalse = true
+                                            }
+                                        }else{
+                                            self.checkTrue2 =  checkDots(Int(val2) ?? 0, dotsCount.count - dotsCountLap1)
+                                            
+                                            if checkTrue2 == false{
+                                                self.checkFalse = true
+                                            }
+                                        }
+                                       
                                         
-                                        if checkTrue == false {
-                                            self.checkFalse = true
-                                        }else  {
+                                        if !checkFalse{
                                             self.checkCorrect = true
                                         }
                                     }
@@ -387,6 +409,18 @@ struct splashDice: View{
                             }
                         }
         }
+    }
+}
+
+struct hintInformation: View{
+    @Binding var hintInformation: String
+    var body: some View{
+        RoundedRectangle(cornerRadius:8)
+            .frame(width: 370, height: 41)
+            .foregroundColor(Color("SecondColor"))
+        Text((hintInformation) != "" ? hintInformation : "Tekan dadu untuk memulai")
+            .font(.system(size: 18, weight: .semibold, design: .rounded))
+            .foregroundColor(Color("PrimaryColor"))
     }
 }
 
