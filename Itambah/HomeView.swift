@@ -56,6 +56,9 @@ struct HomeView: View {
                     
                     }
                 }
+                .onAppear{
+                    SoundManager.instance.PlaySound()
+                }
             }
         }
         

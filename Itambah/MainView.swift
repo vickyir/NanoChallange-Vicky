@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @State private var backHome =  false
     @State var myDice = 1
     @State private var dots : [[Int]] = [[1,2,3], [4,5,6], [7,8,9], [10,11,12]]
     @State var val1 = "?"
@@ -15,6 +16,7 @@ struct MainView: View {
     @State var result = ""
     @State private var finalCount =  false
     @State var hintBtn = false
+    @State var soundBtn = true
     @State private var dotsCount: [Int] = []
     @State private var currentDice = 0
     @State private var SplashScreen = false
@@ -62,7 +64,16 @@ struct MainView: View {
                                 }
                                 
                             }
-                        Image("Pause")
+                        Image((soundBtn) ? "Sound Off" : "Sound On")
+                            .onTapGesture {
+                                soundBtn.toggle()
+                                
+                                if soundBtn{
+                                    SoundManager.instance.PlaySound()
+                                }else{
+                                    SoundManager.instance.StopSound()
+                                }
+                            }
                            
                     }
                     .padding(.bottom, 15.0)
@@ -96,6 +107,7 @@ struct MainView: View {
                             }
                             .foregroundColor(Color("SecondColor"))
                             .scaledToFill()
+                            .shadow(radius: 4, x: 2, y: 2)
                     }
                     
                     HStack{
@@ -150,8 +162,11 @@ struct MainView: View {
                                                 .foregroundColor(Color("Purple"))
                                                 .shadow(radius: 2, x: 2, y:2)
                                                 .onTapGesture {
-                                                    dots[dotsCount[index]].append(contentsOf: [dots.count+1])
-                                                    dotsCount.remove(at: index)
+                                                    withAnimation{
+                                                        dots[dotsCount[index]].append(contentsOf: [dots.count+1])
+                                                        dotsCount.remove(at: index)
+                                                    }
+                                                    
                                                     
                                                 }
                                         }
@@ -238,25 +253,51 @@ struct MainView: View {
                 }
                 
                 if ((checkTrue == true || finalCount == true) && checkCorrect == true) {
-                    ZStack{
-                        RoundedRectangle(cornerRadius: 0)
-                            .ignoresSafeArea()
-                            .foregroundColor(Color("PrimaryColor"))
-                            .opacity(0.8)
-                            .blur(radius: 10)
-                        Circle()
-                            .frame(width: 201, height: 201)
-                            .foregroundColor(Color("SecondColor"))
-                            .shadow(radius: 4, x: 2, y: 2)
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 100, weight: .bold, design: .rounded))
-                            .foregroundColor(Color("ThirdColor"))
-                            .shadow(radius: 2, x: 2, y: 2)
+                    VStack(spacing: 0.0){
+                        ZStack{
+                            RoundedRectangle(cornerRadius: 0)
+                                .ignoresSafeArea()
+                                .foregroundColor(Color("PrimaryColor"))
+                                .opacity(0.8)
+                                .blur(radius: 10)
+                            Circle()
+                                .frame(width: 201, height: 201)
+                                .foregroundColor(Color("SecondColor"))
+                                .shadow(radius: 4, x: 2, y: 2)
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 100, weight: .bold, design: .rounded))
+                                .foregroundColor(Color("ThirdColor"))
+                                .shadow(radius: 2, x: 2, y: 2)
+                            
+                        }
+                        
+                        if finalCount{
+                            
+                            Button(action: {
+                                self.backHome.toggle()
+                            }, label: {
+                                ZStack{
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .frame(width: 90, height: 40)
+                                        .foregroundColor(Color("SecondColor"))
+                                        .shadow(radius: 4, x: 2, y: 2)
+                                    Text("Selesai")
+                                }
+                            })
+                            .sheet(isPresented: $backHome){
+                                HomeView()
+                                    .transition(.move(edge: .leading))
+                            }
+                        }
                     }
+                    
                     .onAppear{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                                         withAnimation {
-                                            self.checkCorrect = false
+                                            if !finalCount{
+                                                self.checkCorrect = false
+                                            }
+                                            
                                         }
                                     }
                     }
