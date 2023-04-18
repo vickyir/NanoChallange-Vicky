@@ -12,7 +12,7 @@ struct HomeView: View {
     var body: some View {
         return Group{
             if changeView{
-                MainView()
+                ParentView()
             }else{
                 ZStack{
                     Rectangle()

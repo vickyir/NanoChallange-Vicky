@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import AVKit
+import AVFoundation
 
 class SoundManager{
     static let instance = SoundManager()
@@ -17,6 +17,7 @@ class SoundManager{
         guard let url = Bundle.main.url(forResource: "kids", withExtension: ".mp3") else {return}
         
         do{
+          
             player = try AVAudioPlayer(contentsOf:url)
             player?.numberOfLoops = -1
             player?.play()

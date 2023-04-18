@@ -16,7 +16,7 @@ struct MainView: View {
     @State var result: Int?
     @State private var hintInformation = ""
     @State private var finalCount =  false
-    @State var hintBtn = false
+    @State var hintBtn = true
     @State var soundBtn = true
     @State private var dotsCount: [Int] = []
     @State private var dotsCountLap1 : Int = 0
@@ -57,7 +57,7 @@ struct MainView: View {
                             .onTapGesture {
                                 withAnimation{
                                     self.hintBtn.toggle()
-        
+                                    
                                 }
                                 
                             }
@@ -71,7 +71,7 @@ struct MainView: View {
                                     SoundManager.instance.StopSound()
                                 }
                             }
-                           
+                        
                     }
                     .padding(.bottom, 15.0)
                     
@@ -96,7 +96,7 @@ struct MainView: View {
                         Image("Tambah")
                         Text(val2)
                             .font(.system(size: 140, weight: .semibold, design: .rounded))
-                            .foregroundColor(Color((checkTrue) ? "ThirdColor" : "SecondColor"))
+                            .foregroundColor(Color("SecondColor"))
                             .shadow(radius: 2, x: 2, y: 2)
                             .scaledToFill()
                         Image("Sama Dengan")
@@ -112,10 +112,12 @@ struct MainView: View {
                             .scaledToFill()
                             .shadow(radius: 4, x: 2, y: 2)
                             .keyboardType(.numberPad)
+                        
+                        
                     }
                     
                     HStack{
-                     
+                        
                         VStack(spacing: 0.0){
                             ForEach(dots.indices, id: \.self){
                                 rowIndex in
@@ -143,7 +145,7 @@ struct MainView: View {
                                                         self.hintBtn = true
                                                     }
                                                     
-                                            
+                                                    
                                                 }
                                             }
                                         
@@ -157,7 +159,7 @@ struct MainView: View {
                         .padding(.leading, 22)
                         
                         Spacer()
-                
+                        
                         VStack{
                             ZStack{
                                 RoundedRectangle(cornerRadius: 17)
@@ -174,25 +176,29 @@ struct MainView: View {
                                                 .shadow(radius: 2, x: 2, y:2)
                                                 .onTapGesture {
                                                     withAnimation{
+                                                        
+                                                        
                                                         dots[dotsCount[index]].append(contentsOf: [dots.count+1])
                                                         dotsCount.remove(at: index)
+                                                        
+                                                        
                                                     }
                                                     
                                                     
                                                 }
                                         }
                                     }
-                                   
+                                    
                                 }
                                 
                                 
                             }
-                           
-                               
+                            
+                            
                             Button(action: {
                                 if val1 != "?" {
                                     if checkTrue == true && checkTrue2 == true{
-        
+                                        
                                         self.finalCount = checkResult(Int(result ?? 0), dotsCount.count )
                                         
                                         if finalCount == false {
@@ -214,15 +220,15 @@ struct MainView: View {
                                                 self.checkFalse = true
                                             }
                                         }
-                                       
+                                        
                                         
                                         if !checkFalse{
                                             self.checkCorrect = true
                                         }
                                     }
-                                   
                                     
-                                   
+                                    
+                                    
                                 }
                                 
                             }, label: {
@@ -234,11 +240,11 @@ struct MainView: View {
                                     Text("Cek")
                                         .foregroundColor(Color("SecondColor"))
                                     
-                                        
+                                    
                                 }
                                 
                             })
-
+                            
                         }
                         Spacer()
                         Spacer()
@@ -266,12 +272,12 @@ struct MainView: View {
                     }
                     .onAppear{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                        withAnimation {
-                                            self.checkFalse = false
-                                        }
-                                    }
+                            withAnimation {
+                                self.checkFalse = false
+                            }
+                        }
                     }
-                   
+                    
                 }
                 
                 if ((checkTrue == true || finalCount == true) && checkCorrect == true) {
@@ -315,19 +321,22 @@ struct MainView: View {
                     
                     .onAppear{
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                                        withAnimation {
-                                            if !finalCount{
-                                                self.checkCorrect = false
-                                            }
-                                            
-                                        }
-                                    }
+                            withAnimation {
+                                if !finalCount{
+                                    self.checkCorrect = false
+                                }
+                                
+                            }
+                        }
                     }
                 }
-               
+                
+            }
+            .onTapGesture {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             }
         }
-     
+        
         
     }
     
@@ -396,18 +405,18 @@ struct splashDice: View{
         
         .onAppear{
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                            withAnimation {
-                                if Val1 == "?" || check1 == false{
-                                    self.Val1 = "\(dice)"
-                                }
-                                
-                                if Val1 != "?" && check1 == true{
-                                    self.Val2 = "\(dice)"
-                                }
-                              
-                                self.splash = false
-                            }
-                        }
+                withAnimation {
+                    if Val1 == "?" || check1 == false{
+                        self.Val1 = "\(dice)"
+                    }
+                    
+                    if Val1 != "?" && check1 == true{
+                        self.Val2 = "\(dice)"
+                    }
+                    
+                    self.splash = false
+                }
+            }
         }
     }
 }
