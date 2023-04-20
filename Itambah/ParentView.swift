@@ -55,11 +55,11 @@ struct ParentView: View {
                             ZStack{
                                 RoundedRectangle(cornerRadius: 10)
                                     .frame(width: 150, height: 35)
-                                    .foregroundColor(Color("SecondColor"))
+                                    .foregroundColor(Color("ThirdColor"))
                                     .shadow(radius: 4, x: 2, y: 2)
                                 Text("Mulai Permainan")
                                     .font(.system(size: 14, weight: .bold, design: .rounded))
-                                    .foregroundColor(Color("ThirdColor"))
+                                    .foregroundColor(Color("SecondColor"))
                             }
                             
                         })
