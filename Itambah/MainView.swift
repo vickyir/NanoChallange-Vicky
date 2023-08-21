@@ -40,6 +40,7 @@ struct MainView: View {
     @State private var isDiceGlow: Bool = false
     @State private var isDotsGlow: Bool = false
     @State private var isAnswerGlow: Bool = false
+    
     /*
      currentStage:
      0. Click the dice -> isDiceClickable true

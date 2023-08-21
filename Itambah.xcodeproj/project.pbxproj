@@ -14,6 +14,7 @@
 		CC5B424929DB109C00A40DBE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B424829DB109C00A40DBE /* HomeView.swift */; };
 		CC5B424B29DB176300A40DBE /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5B424A29DB176300A40DBE /* MainView.swift */; };
 		CC6CD77F29EA930A00493E44 /* ParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6CD77E29EA930A00493E44 /* ParentView.swift */; };
+		CC96F0CC2A8F59DB00412DE8 /* MainGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC96F0CB2A8F59DB00412DE8 /* MainGameViewModel.swift */; };
 		CCAA475E29E29A7800CEBD06 /* kids.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CCAA475D29E29A7800CEBD06 /* kids.mp3 */; };
 		CCAA476029E29AEA00CEBD06 /* SoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAA475F29E29AEA00CEBD06 /* SoundManager.swift */; };
 /* End PBXBuildFile section */
@@ -27,6 +28,7 @@
 		CC5B424829DB109C00A40DBE /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		CC5B424A29DB176300A40DBE /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		CC6CD77E29EA930A00493E44 /* ParentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentView.swift; sourceTree = "<group>"; };
+		CC96F0CB2A8F59DB00412DE8 /* MainGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainGameViewModel.swift; sourceTree = "<group>"; };
 		CCAA475D29E29A7800CEBD06 /* kids.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = kids.mp3; sourceTree = "<group>"; };
 		CCAA475F29E29AEA00CEBD06 /* SoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,6 +63,9 @@
 		CC5B423929DB0E2000A40DBE /* Itambah */ = {
 			isa = PBXGroup;
 			children = (
+				CC96F0CA2A8DFF9A00412DE8 /* ViewModel */,
+				CC96F0C92A8DFF9100412DE8 /* View */,
+				CC96F0C82A8DFF8800412DE8 /* Model */,
 				CC5B423A29DB0E2000A40DBE /* ItambahApp.swift */,
 				CC5B423C29DB0E2000A40DBE /* ContentView.swift */,
 				CC5B424A29DB176300A40DBE /* MainView.swift */,
@@ -80,6 +85,28 @@
 				CC5B424129DB0E2100A40DBE /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CC96F0C82A8DFF8800412DE8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CC96F0C92A8DFF9100412DE8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CC96F0CA2A8DFF9A00412DE8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CC96F0CB2A8F59DB00412DE8 /* MainGameViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CCAA475C29E29A4700CEBD06 /* sounds */ = {
@@ -161,6 +188,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC96F0CC2A8F59DB00412DE8 /* MainGameViewModel.swift in Sources */,
 				CC5B424929DB109C00A40DBE /* HomeView.swift in Sources */,
 				CC5B424B29DB176300A40DBE /* MainView.swift in Sources */,
 				CC5B423D29DB0E2000A40DBE /* ContentView.swift in Sources */,
@@ -311,7 +339,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -339,7 +367,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
